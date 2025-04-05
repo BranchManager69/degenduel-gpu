@@ -1,10 +1,8 @@
 # Ignore nested git repositories 
-/repos/                            # Contains all repos that didi RAG system uses, including didi itself
-/vanity-grinder                    # GPU-accelerated Solana vanity address generator
+/repos/                            # Contains repos that didi RAG system pulls, including a clone of didi itself
+/vanity-grinder                    # GPU-accelerated Solana vanity address generator (has its own repo)
+/didi                              # DegenDuel's GH200-powered AI assistant (has its own repo)
 /.vast/                            # Lambda/Vast cloud provider directories
-
-# Exclude any future Didi installation at the top level
-/didi/                             # In case didi is installed at the top level
 
 # Exclude data contents except the directory itself
 /data/*
