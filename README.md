@@ -19,27 +19,38 @@ Didi transforms the DegenDuel codebase into a searchable knowledge base, enablin
 
 - Python 3.10+
 - Git
-- DegenDuel repository
+- GPU with CUDA support (for optimal performance)
 
-### Setup
+### Lambda Labs Setup
+
+The Lambda Labs environment comes pre-configured with Didi in the `/home/ubuntu/degenduel-gpu/didi` directory. To ensure proper setup:
 
 ```bash
-# Clone this repository
-git clone https://github.com/degenduel/didi.git
-cd didi
+# Change to the didi directory
+cd /home/ubuntu/degenduel-gpu/didi
 
-# Create virtual environment
+# Create virtual environment (only needed first time)
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Activate virtual environment
+source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Clone the DegenDuel repository if needed
-git clone https://github.com/degenduel/degenduel-fe.git repo
+# Update repository and build knowledge base
+./didi.sh update
+```
 
-# Build Didi's knowledge base
-./didi.sh index
+**Important Notes for Lambda Labs:**
+- The virtual environment is stored in the persistent `/home/ubuntu` directory and will remain after instance restart
+- The knowledge base is also stored in persistent storage at `/home/ubuntu/degenduel-gpu/data/chroma_db`
+- Models are cached in `/home/ubuntu/degenduel-gpu/models` for faster loading after the first run
+
+### One-Command Refresh (After Instance Restart)
+
+```bash
+cd /home/ubuntu/degenduel-gpu/didi && source venv/bin/activate && ./didi.sh status
 ```
 
 ## 🚀 Usage
@@ -160,6 +171,7 @@ For detailed usage, see the [vanity-grinder README](/vanity-grinder/README.md).
 ## Quick Commands
 
 - `./revive` - Quickly restore the vanity-grinder environment in one step
+- `cd /home/ubuntu/degenduel-gpu/didi && source venv/bin/activate && ./didi.sh status` - Check Didi's status
 
 ## Lambda Labs Best Practices
 
@@ -182,15 +194,23 @@ Lambda Labs instances have two types of storage:
 
 **Starting a Fresh Session**:
 ```bash
+# For vanity-grinder
 cd /home/ubuntu/degenduel-gpu
 ./revive  # Sets up environment for vanity-grinder
+
+# For Didi
+cd /home/ubuntu/degenduel-gpu/didi
+source venv/bin/activate
+./didi.sh status
 ```
 
 **Before Termination Checklist**:
 1. Ensure all code changes are saved to the `/home/ubuntu/degenduel-gpu/` directory
 2. Push any important changes to GitHub if applicable
 3. Copy any important data to persistent storage
-4. Stop any running services: `pkill vanity-grinder`
+4. Stop any running services:
+   - `pkill vanity-grinder` (for vanity address generator)
+   - Exit any active Python/Didi processes with Ctrl+C
 
 **Efficient Cost Management**:
 - Lambda Labs charges by the hour
@@ -201,17 +221,23 @@ cd /home/ubuntu/degenduel-gpu
 
 Our repository uses a custom approach to handle environment dependencies:
 
-1. **Rust Version Management**:
+1. **Rust Version Management** (for vanity-grinder):
    - We store symlinks in `tools/bin/` pointing to Rust 1.81.0
    - This ensures consistent builds regardless of system Rust version
 
-2. **Helper Scripts**:
-   - `run-vanity.sh`: Full setup script with detailed output
-   - `revive`: Quick one-command restoration
+2. **Python Environment** (for Didi):
+   - Virtual environment in `/home/ubuntu/degenduel-gpu/didi/venv/`
+   - GPU-accelerated model loading via PyTorch/CUDA
+   - Environment variables configured in `didi.sh`
 
-3. **GPU Resources**:
+3. **Helper Scripts**:
+   - `run-vanity.sh`: Full setup script for vanity-grinder
+   - `revive`: Quick one-command restoration for vanity-grinder
+   - `didi.sh`: Core command interface for Didi
+
+4. **GPU Resources**:
    - CUDA libraries are installed system-wide on Lambda Labs
-   - Our code automatically finds and uses available GPU resources
+   - Both projects automatically detect and use available GPU resources
    - Run `nvidia-smi` to monitor GPU usage
 
 ### Project Organization
@@ -224,7 +250,9 @@ The degenduel-gpu repository follows a structured organization:
 
 2. **Project Directories**:
    - `vanity-grinder/`: GPU-accelerated Solana vanity address generator
-   - Each project has its own README and documentation
+   - `didi/`: AI assistant for code understanding and search
+   - `data/`: Persistent data storage (including Didi's knowledge base)
+   - `models/`: Cached AI models for faster loading
 
 3. **Helper Scripts**:
    - Located in the repository root
