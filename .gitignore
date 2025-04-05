@@ -2,6 +2,8 @@
 /repos/
 # Include vanity-grinder code but not its Git repository
 /vanity-grinder
+# Ignore Lambda/Vast cloud provider directories
+/.vast/
 
 # Exclude Didi RAG system entirely
 /didi/
