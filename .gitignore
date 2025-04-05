@@ -1,12 +1,10 @@
-# Ignore nested git repositories
-/repos/
-# Include vanity-grinder code but not its Git repository
-/vanity-grinder
-# Ignore Lambda/Vast cloud provider directories
-/.vast/
+# Ignore nested git repositories 
+/repos/                            # Contains all repos that didi RAG system uses, including didi itself
+/vanity-grinder                    # GPU-accelerated Solana vanity address generator
+/.vast/                            # Lambda/Vast cloud provider directories
 
-# Exclude Didi RAG system entirely
-/didi/
+# Exclude any future Didi installation at the top level
+/didi/                             # In case didi is installed at the top level
 
 # Exclude data contents except the directory itself
 /data/*
