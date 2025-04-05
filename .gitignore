@@ -1,0 +1,57 @@
+# Ignore nested git repositories
+/repos/
+# Include vanity-grinder code but not its Git repository
+/vanity-grinder
+
+# Exclude Didi RAG system entirely
+/didi/
+
+# Exclude data contents except the directory itself
+/data/*
+!/data/.gitkeep
+
+# Exclude models contents except the directory itself
+/models/*
+!/models/.gitkeep
+
+# Node modules and dependencies
+node_modules/
+__pycache__/
+*.pyc
+venv/
+venvs/
+
+# Build artifacts
+target/
+dist/
+build/
+
+# Rust specific
+Cargo.lock
+**/*.rs.bk
+
+# Environment and configuration
+.env
+.env.local
+.env.*.local
+
+# IDE/Editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+*.bak
+*~

@@ -1,0 +1,5 @@
+#\!/bin/bash
+# Quick revive command for the vanity-grinder
+echo "🚀 Reviving vanity-grinder..."
+/home/ubuntu/degenduel-gpu/run-vanity.sh
+
